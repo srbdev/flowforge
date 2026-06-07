@@ -32,7 +32,6 @@ Expression:
   output = total_after_giving
 
 Flowchart:
-\`\`\`text
 flowchart TD
     START --> total_bought
     total_bought[total_bought: multiply(bags, apples_per_bag)]
@@ -41,7 +40,6 @@ flowchart TD
     total_after_buying --> total_after_giving
     total_after_giving[total_after_giving: subtract(total_after_buying, apples_given_away)]
     total_after_giving --> END
-\`\`\`
 Approve and save? [y/N] y
 Saved to /tmp/graph.json
 
