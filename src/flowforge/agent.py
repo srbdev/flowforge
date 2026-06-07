@@ -38,7 +38,7 @@ class Agent:
             "- Each node reads named params or prior node ids as inputs.\n"
             "- Nodes must form a DAG (no cycles).\n"
             "- The 'output' field must be a node id.\n"
-            "- 'params' lists the symbolic parameter names; 'example_params' maps them to the "
+            "- 'params' lists the symbolic parameter names; 'init_params' maps them to the "
             "concrete numbers extracted from the problem."
         )
         return self._llm.invoke(
