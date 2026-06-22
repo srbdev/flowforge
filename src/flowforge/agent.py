@@ -75,21 +75,14 @@ class Agent:
     MAX_RETRIES = 2
 
     def __init__(self, model: str = "openai/gpt-oss-120b") -> None:
-        api_key = os.environ.get("OPENROUTER_API_KEY")
-        if not api_key:
-            raise EnvironmentError("OPENROUTER_API_KEY is not set")
         try:
-            from langchain_openai import ChatOpenAI
+            from langchain_ollama.llms import OllamaLLM
         except ImportError:
             raise ImportError(
-                "langchain-openai is required for the live planner: uv add langchain-openai"
+                "langchain-ollama is required for the live planner: uv add langchain-ollama"
             )
 
-        self._llm = ChatOpenAI(
-            model=model,
-            openai_api_key=api_key,
-            openai_api_base="https://openrouter.ai/api/v1",
-        )
+        self._llm = OllamaLLM(model="gemma4:latest")
         self._system = _build_system_prompt()
 
     def plan(self, problem: str) -> GraphSpec:
@@ -101,7 +94,9 @@ class Agent:
 
         for attempt in range(self.MAX_RETRIES + 1):
             response = self._llm.invoke(messages)
-            raw: str = response.content if hasattr(response, "content") else str(response)
+            raw: str = (
+                response.content if hasattr(response, "content") else str(response)
+            )
 
             try:
                 json_str = _extract_json(raw)
